@@ -1,0 +1,19 @@
+# Directories
+node_modules/
+logs/
+dist/
+coverage/
+.nyc_output/
+
+# Files
+.env*
+.DS_Store
+*.log
+*.swp
+
+# Custom files and directories (add your own as needed)
+# example.js
+# /custom-directory/
+
+# Ignore the .gitignore file itself
+!.gitignore
