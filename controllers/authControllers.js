@@ -1,6 +1,7 @@
 const colors = require("colors");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const registerController = async (req, res) => {
   try {
@@ -29,8 +30,49 @@ const registerController = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "There is Some internal Error will Resolve it soon...",
+      error,
     });
   }
 };
 
-module.exports = { registerController };
+// Login
+const loginController = async (req, res) => {
+  try {
+    const existingUser = await userModel.findOne({ email: req.body.email });
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid Credentials",
+      });
+    }
+    const comparePassword = await bcrypt.compare(
+      req,
+      body.password,
+      existingUser.password
+    );
+    if (!comparePassword) {
+      return res.status(500).json({
+        success: false,
+        message: "Invalid Credentials",
+      });
+    }
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    return res.status(200).send({
+      success: true,
+      message: "Login Successfully",
+      token,
+      existingUser,
+    });
+  } catch (error) {
+    console.log(`Error occur at loginController : ${error}`.bgRed.white);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong internally we get back to you shortly",
+      error,
+    });
+  }
+};
+
+module.exports = { registerController, loginController };
