@@ -24,6 +24,7 @@ app.use(morgan("dev"));
 // routes
 // test
 app.use("/api/v1/test/", require("./routes/testRoutes"));
+app.use("/api/v1/auth", require("./routes/authRoute"));
 
 // listen
 app.listen(PORT, () => {
