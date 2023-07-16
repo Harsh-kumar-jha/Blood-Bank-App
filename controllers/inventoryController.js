@@ -1,4 +1,5 @@
 const inventoryModel = require("../models/inventoryModel");
+const colors = require("colors");
 
 const createInventoryController = async (req, res) => {
   try {
@@ -33,4 +34,31 @@ const createInventoryController = async (req, res) => {
   }
 };
 
-module.exports = { createInventoryController };
+// Get All blood record
+const getInventoryController = async (req, res) => {
+  try {
+    const inventory = await inventoryModel
+      .find({
+        organization: req.body.userId,
+      })
+      .populate("donar")
+      .populate("hospital")
+      .sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      message: "get All records successfully",
+      inventory,
+    });
+  } catch (error) {
+    console.log(
+      `Error Occur with getInventoryController :${error} `.bgRed.white
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong..",
+      error,
+    });
+  }
+};
+
+module.exports = { createInventoryController, getInventoryController };
