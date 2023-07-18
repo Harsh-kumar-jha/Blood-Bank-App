@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputTyes = ({
+const InputTypes = ({
   labelText,
   labelFor,
   inputType,
@@ -26,4 +26,4 @@ const InputTyes = ({
   );
 };
 
-export default InputTyes;
+export default InputTypes;
