@@ -13,7 +13,7 @@ connectDB();
 //port
 const PORT = process.env.PORT || 5000;
 
-// rest objext
+// rest object
 const app = express();
 
 // middlewares
