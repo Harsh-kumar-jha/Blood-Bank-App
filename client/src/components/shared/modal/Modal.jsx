@@ -92,7 +92,9 @@ const Modal = () => {
                 aria-label="Default select example"
                 onSelect={(e) => setBloodGroup(e.target.value)}
               >
-                <option selected>Open this select menu</option>
+                <option defaultValue={"Open this select menu"}>
+                  Open this select menu
+                </option>
                 <option value={"O+"}>O+</option>
                 <option value={"O-"}>O-</option>
                 <option value={"AB+"}>AB+</option>
