@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const inventoryModel = require("../models/inventoryModel");
 const colors = require("colors");
 
@@ -14,6 +15,26 @@ const createInventoryController = async (req, res) => {
     }
     if (inventoryType === "out" && user.role !== "hospital") {
       throw new Error("Not a hospital");
+    }
+    if (req.body.inventoryType === "out") {
+      const requestedBloodGroup = req.body.bloodGroup;
+      const requestedBloodQuantity = req.body.quantity;
+      const organization = new mongoose.Types.ObjectId(req.body.userId);
+      const totalInOfRequestedBlood = await inventoryModel.aggregate([
+        {
+          $match: {
+            organization,
+            inventoryType: "in",
+            bloodGroup: requestedBloodGroup,
+          },
+        },
+        {
+          $group: {
+            _id: "$bloodGroup",
+            total: { $sum: "$quantity" },
+          },
+        },
+      ]);
     }
     // Save record
     const inventory = new inventoryModel(req.body);
