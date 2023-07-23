@@ -35,7 +35,34 @@ const createInventoryController = async (req, res) => {
           },
         },
       ]);
+      const totalIn = totalInOfRequestedBlood[0]?.total || 0;
+      // Calculate OUT blood record
+      const totalOutOfRequestedBloodGroup = await inventoryModel.aggregate([
+        {
+          $match: {
+            organization,
+            inventoryType: "out",
+            bloodGroup: requestedBloodGroup,
+          },
+        },
+        {
+          $group: {
+            _id: "$bloodGroup",
+            total: { $sum: "$quantity" },
+          },
+        },
+      ]);
     }
+    const totalOut = totalOutOfRequestedBloodGroup[0]?.total || 0;
+    const availableQuantityOfBloodGroup = totalIn - totalOut;
+
+    if (availableQuantityOfBloodGroup < requestedBloodQuantity) {
+      return res.statue(404).json({
+        success: false,
+        message: `Only ${availableQuantityOfBloodGroup}ml  of ${requestedBloodGroup.toUpperCase()} Blood is Available`,
+      });
+    }
+    req.body.hospital = user?._id;
     // Save record
     const inventory = new inventoryModel(req.body);
     await inventory.save();
