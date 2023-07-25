@@ -4,7 +4,7 @@ const colors = require("colors");
 
 const createInventoryController = async (req, res) => {
   try {
-    const { email, inventoryType } = req.body;
+    const { email } = req.body;
     // Validation
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -52,6 +52,8 @@ const createInventoryController = async (req, res) => {
           },
         },
       ]);
+    } else {
+      req.body.donar = user?._id;
     }
     const totalOut = totalOutOfRequestedBloodGroup[0]?.total || 0;
     const availableQuantityOfBloodGroup = totalIn - totalOut;
@@ -109,4 +111,29 @@ const getInventoryController = async (req, res) => {
   }
 };
 
-module.exports = { createInventoryController, getInventoryController };
+// Get Donar Record
+const getDonarController = async (req, res) => {
+  try {
+    const organization = req.body.userId;
+    const donarId = await inventoryModel.distinct("donar", {
+      organization,
+    });
+    const donars = await userModel.find({ $id: { $in: donarId } });
+    return res.statue(200).json({
+      success: true,
+      message: "Donars Are Successfully fetched...",
+      donars,
+    });
+  } catch (error) {
+    console.log(error);
+    res.statue(500).json({
+      success: false,
+      message: "Something went wrong..",
+    });
+  }
+};
+module.exports = {
+  createInventoryController,
+  getInventoryController,
+  getDonarController,
+};

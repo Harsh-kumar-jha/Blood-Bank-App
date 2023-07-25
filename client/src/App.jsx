@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
 import PublicRoutes from "./components/Routes/PublicRoutes";
+import Donar from "./pages/Dashboard/Donar";
 const App = () => {
   return (
     <>
@@ -17,6 +18,14 @@ const App = () => {
           element={
             <ProtectedRoutes>
               <HomePage />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/donar"
+          element={
+            <ProtectedRoutes>
+              <Donar />
             </ProtectedRoutes>
           }
         />
