@@ -59,7 +59,7 @@ const createInventoryController = async (req, res) => {
     const availableQuantityOfBloodGroup = totalIn - totalOut;
 
     if (availableQuantityOfBloodGroup < requestedBloodQuantity) {
-      return res.statue(404).json({
+      return res.status(404).json({
         success: false,
         message: `Only ${availableQuantityOfBloodGroup}ml  of ${requestedBloodGroup.toUpperCase()} Blood is Available`,
       });
@@ -119,16 +119,38 @@ const getDonarController = async (req, res) => {
       organization,
     });
     const donars = await userModel.find({ $id: { $in: donarId } });
-    return res.statue(200).json({
+    return res.status(200).json({
       success: true,
       message: "Donars Are Successfully fetched...",
       donars,
     });
   } catch (error) {
     console.log(error);
-    res.statue(500).json({
+    res.status(500).json({
       success: false,
       message: "Something went wrong..",
+      error,
+    });
+  }
+};
+
+// Get Hospital Records
+const getHospitalController = async (req, res) => {
+  try {
+    const organization = req.body.userId;
+    const hospitalId = await inventoryModel.distinct("hospital", organization);
+    const hospitals = await userModel.find({ _id: { $in: hospitalId } });
+    return res.status(200).json({
+      success: true,
+      message: "Hospital Data fetch successfully",
+      hospitals,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong...",
+      error,
     });
   }
 };
@@ -136,4 +158,5 @@ module.exports = {
   createInventoryController,
   getInventoryController,
   getDonarController,
+  getHospitalController,
 };
