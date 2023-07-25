@@ -57,7 +57,7 @@ const HomePage = () => {
                     <th>{record.bloodRecord}</th>
                     <th>{record.inventoryType}</th>
                     <th>{record.quantity}</th>
-                    <th>{record.donarEmail}</th>
+                    <th>{record.email}</th>
                     <th>
                       {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}
                     </th>
