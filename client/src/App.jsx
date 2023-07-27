@@ -9,6 +9,9 @@ import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
 import PublicRoutes from "./components/Routes/PublicRoutes";
 import Donar from "./pages/Dashboard/Donar";
 import Hospital from "./pages/Dashboard/Hospital";
+import Organization from "./pages/Dashboard/Organization";
+import Consumer from "./pages/Dashboard/Consumer";
+import Donation from "./pages/Dashboard/Donation";
 const App = () => {
   return (
     <>
@@ -35,6 +38,30 @@ const App = () => {
           element={
             <ProtectedRoutes>
               <Hospital />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/organization"
+          element={
+            <ProtectedRoutes>
+              <Organization />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/consumer"
+          element={
+            <ProtectedRoutes>
+              <Consumer />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/donation"
+          element={
+            <ProtectedRoutes>
+              <Donation />
             </ProtectedRoutes>
           }
         />

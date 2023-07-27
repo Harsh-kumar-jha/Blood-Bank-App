@@ -110,6 +110,31 @@ const getInventoryController = async (req, res) => {
     });
   }
 };
+// Get Hospital blood record
+const getInventoryHospitalController = async (req, res) => {
+  try {
+    const inventory = await inventoryModel
+      .find(req.body.filter)
+      .populate("donar")
+      .populate("hospital")
+      .populate("organization")
+      .sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      message: "get hospital consumer records successfully",
+      inventory,
+    });
+  } catch (error) {
+    console.log(
+      `Error Occur with getInventoryController :${error} `.bgRed.white
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong..",
+      error,
+    });
+  }
+};
 
 // Get Donar Record
 const getDonarController = async (req, res) => {
@@ -154,9 +179,51 @@ const getHospitalController = async (req, res) => {
     });
   }
 };
+
+const getOrganizationController = async (req, res) => {
+  try {
+    const donar = req.body.userId;
+    const orgId = await inventoryModel.distinct("organization", { donar });
+    const organizations = await userModel.find({ _id: { $in: orgId } });
+    return res.status(200).json({
+      success: true,
+      message: "Organization details are fetched successfully",
+      organizations,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong...",
+      error,
+    });
+  }
+};
+const getOrganizationForHospitalController = async (req, res) => {
+  try {
+    const hospital = req.body.userId;
+    const orgId = await inventoryModel.distinct("organization", { hospital });
+    const organizations = await userModel.find({ _id: { $in: orgId } });
+    return res.status(200).json({
+      success: true,
+      message: "Organization details are fetched successfully",
+      organizations,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong...",
+      error,
+    });
+  }
+};
 module.exports = {
   createInventoryController,
   getInventoryController,
   getDonarController,
   getHospitalController,
+  getOrganizationController,
+  getOrganizationForHospitalController,
+  getInventoryHospitalController,
 };
