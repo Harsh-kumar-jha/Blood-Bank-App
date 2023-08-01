@@ -136,6 +136,30 @@ const getInventoryHospitalController = async (req, res) => {
   }
 };
 
+// get Top 3 Records
+const getRecentInventoryController = async (req, res) => {
+  try {
+    const inventory = await inventoryModel
+      .find({
+        organization: req.body.userId,
+      })
+      .limit(3)
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Recent Inventory Data",
+      inventory,
+    });
+  } catch (error) {
+    console.log("Error occur with getRecentInventoryController".bgRed.white);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong...",
+      error,
+    });
+  }
+};
 // Get Donar Record
 const getDonarController = async (req, res) => {
   try {
@@ -226,4 +250,5 @@ module.exports = {
   getOrganizationController,
   getOrganizationForHospitalController,
   getInventoryHospitalController,
+  getRecentInventoryController,
 };
