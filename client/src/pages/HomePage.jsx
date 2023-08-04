@@ -5,10 +5,12 @@ import Layout from "../components/shared/Layout/Layout";
 import Modal from "../components/shared/modal/Modal";
 import API from "../services/API";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, user } = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
+  const navigate = useNavigate;
 
   const getBloodRecord = async () => {
     const { data } = await API.get("/inventory/get-inventory");
@@ -26,6 +28,7 @@ const HomePage = () => {
   });
   return (
     <Layout>
+      {user?.role === "admin" && navigate("/admin")}
       {error && <span>{alert(error)}</span>}
       {loading ? (
         <Spinner />
