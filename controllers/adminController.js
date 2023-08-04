@@ -22,6 +22,8 @@ const getDonarListController = async (req, res) => {
     });
   }
 };
+
+// Fetching  Hospital List
 const getHospitalListController = async (req, res) => {
   try {
     const hospitalData = await userModel
@@ -43,6 +45,8 @@ const getHospitalListController = async (req, res) => {
     });
   }
 };
+
+// Fetching Organization List
 const getOrganizationListController = async (req, res) => {
   try {
     const orgData = await userModel
@@ -65,8 +69,27 @@ const getOrganizationListController = async (req, res) => {
   }
 };
 
+// Deleting Donar
+const deleteDonarController = async (req, res) => {
+  try {
+    await userModel.findByIdAndDelete(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Donar Deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong...",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getOrganizationListController,
   getDonarListController,
   getHospitalListController,
+  deleteDonarController,
 };

@@ -3,6 +3,7 @@ const {
   getDonarListController,
   getOrganizationListController,
   getHospitalListController,
+  deleteDonarController,
 } = require("../controllers/adminController");
 const authMiddlewares = require("../middlewares/authMiddlewares");
 const adminMiddleware = require("../middlewares/adminMiddleware");
@@ -34,6 +35,30 @@ router.get(
   authMiddlewares,
   adminMiddleware,
   getOrganizationListController
+);
+
+// Delete || Donar
+router.delete(
+  "/deleteDonar/:id",
+  authMiddlewares,
+  adminMiddleware,
+  deleteDonarController
+);
+
+// Delete || Hospital
+router.delete(
+  "/deleteHospital/:id",
+  authMiddlewares,
+  adminMiddleware,
+  deleteDonarController
+);
+
+// Delete || Organization
+router.delete(
+  "/deleteOrg/:id",
+  authMiddlewares,
+  adminMiddleware,
+  deleteDonarController
 );
 
 // export
